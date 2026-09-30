@@ -1,0 +1,365 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --brand-green-deep: #ecfdf5;
+    --brand-green-dark: #d1fae5;
+    --brand-green-primary: #10b981;
+    --brand-green-accent: #059669;
+    --brand-green-glow: #34d399;
+    --brand-gold: #d97706;
+  }
+
+  html {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    color-scheme: light dark;
+  }
+
+  body {
+    background-color: #ecfdf5;
+    background-image: url('/src/assets/images/gantry_billboard_bg_1790743984781.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    color: #052e16;
+    min-height: 100vh;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  /* Tabular numbers for all data grids, counters, and metrics */
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Custom subtle scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #d1fae5;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #10b981;
+    border-radius: 4px;
+    border: 2px solid #d1fae5;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #059669;
+  }
+}
+
+/* =========================================================================
+   Theme 1 (Default): Light Green Programmer IDE (dev_light_green)
+   Crisp Mint/Sage Light Green surfaces, JetBrains Mono IDE geometry & dark ink
+   ========================================================================= */
+html[data-theme="dev_light_green"] {
+  color-scheme: light;
+  --brand-green-deep: #ecfdf5;
+  --brand-green-dark: #d1fae5;
+  --brand-green-primary: #059669;
+  --brand-green-accent: #10b981;
+  --brand-green-glow: #34d399;
+}
+
+/* Developer Blueprint Grid Overlay Pattern */
+.dev-blueprint-grid {
+  background-image:
+    linear-gradient(to right, rgba(5, 150, 105, 0.12) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(5, 150, 105, 0.12) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Primary Cards, Headers & Containers -> Crisp Light Mint Green */
+html[data-theme="dev_light_green"] .bg-\[\#02180f\],
+html[data-theme="dev_light_green"] .bg-\[\#02180f\]\/95,
+html[data-theme="dev_light_green"] .bg-\[\#02180f\]\/90,
+html[data-theme="dev_light_green"] .bg-\[\#02180f\]\/85,
+html[data-theme="dev_light_green"] .bg-\[\#032014\],
+html[data-theme="dev_light_green"] .bg-\[\#032014\]\/95,
+html[data-theme="dev_light_green"] .bg-\[\#032014\]\/90,
+html[data-theme="dev_light_green"] .bg-\[\#032014\]\/85,
+html[data-theme="dev_light_green"] .bg-\[\#031e13\],
+html[data-theme="dev_light_green"] .bg-\[\#031e13\]\/95,
+html[data-theme="dev_light_green"] .bg-\[\#052115\],
+html[data-theme="dev_light_green"] .bg-\[\#052115\]\/90,
+html[data-theme="dev_light_green"] .bg-slate-950,
+html[data-theme="dev_light_green"] .bg-slate-950\/95,
+html[data-theme="dev_light_green"] .bg-slate-950\/90,
+html[data-theme="dev_light_green"] .bg-slate-950\/80,
+html[data-theme="dev_light_green"] .bg-slate-950\/75,
+html[data-theme="dev_light_green"] .bg-slate-950\/70,
+html[data-theme="dev_light_green"] .bg-slate-950\/55,
+html[data-theme="dev_light_green"] .bg-slate-950\/45,
+html[data-theme="dev_light_green"] .bg-slate-900,
+html[data-theme="dev_light_green"] .bg-slate-900\/95,
+html[data-theme="dev_light_green"] .bg-slate-900\/90,
+html[data-theme="dev_light_green"] .bg-slate-900\/85,
+html[data-theme="dev_light_green"] .bg-slate-900\/60 {
+  background-color: rgba(236, 253, 245, 0.94) !important;
+  box-shadow: 0 4px 20px -2px rgba(6, 78, 59, 0.08), 0 1px 3px rgba(5, 150, 105, 0.12) !important;
+}
+
+/* Secondary Panels, Subheaders, Filter Bars & Inputs -> Soft Sage Light Green (#d1fae5 / #dcfce7) */
+html[data-theme="dev_light_green"] .bg-\[\#042416\],
+html[data-theme="dev_light_green"] .bg-\[\#01110a\],
+html[data-theme="dev_light_green"] .bg-\[\#01110a\]\/95,
+html[data-theme="dev_light_green"] .bg-\[\#01110a\]\/90,
+html[data-theme="dev_light_green"] .bg-\[\#01120b\],
+html[data-theme="dev_light_green"] .bg-\[\#02150d\],
+html[data-theme="dev_light_green"] .bg-slate-800,
+html[data-theme="dev_light_green"] .bg-slate-800\/90,
+html[data-theme="dev_light_green"] .bg-emerald-950,
+html[data-theme="dev_light_green"] .bg-emerald-950\/90,
+html[data-theme="dev_light_green"] .bg-emerald-950\/80,
+html[data-theme="dev_light_green"] .bg-emerald-900,
+html[data-theme="dev_light_green"] .bg-emerald-900\/95,
+html[data-theme="dev_light_green"] .bg-emerald-900\/90,
+html[data-theme="dev_light_green"] .bg-emerald-900\/60,
+html[data-theme="dev_light_green"] .bg-emerald-900\/50 {
+  background-color: rgba(209, 250, 229, 0.92) !important;
+}
+
+/* Alternating Table Rows in Light Green IDE Mode */
+html[data-theme="dev_light_green"] .bg-\[\#031e13\]\/60 {
+  background-color: rgba(240, 253, 244, 0.95) !important;
+}
+html[data-theme="dev_light_green"] .bg-\[\#02180f\]\/40 {
+  background-color: rgba(220, 252, 231, 0.65) !important;
+}
+html[data-theme="dev_light_green"] tr.hover\:bg-emerald-900\/30:hover {
+  background-color: rgba(167, 243, 208, 0.65) !important;
+}
+
+/* Semantic Status & Syntax Highlighted Badges in Light Green Mode */
+html[data-theme="dev_light_green"] .bg-amber-950,
+html[data-theme="dev_light_green"] .bg-amber-950\/90,
+html[data-theme="dev_light_green"] .bg-amber-950\/80,
+html[data-theme="dev_light_green"] .bg-amber-950\/60,
+html[data-theme="dev_light_green"] .bg-amber-950\/40,
+html[data-theme="dev_light_green"] .bg-amber-900\/60 {
+  background-color: #fef3c7 !important;
+}
+
+html[data-theme="dev_light_green"] .bg-sky-950,
+html[data-theme="dev_light_green"] .bg-sky-950\/80,
+html[data-theme="dev_light_green"] .bg-blue-950\/80 {
+  background-color: #e0f2fe !important;
+}
+
+html[data-theme="dev_light_green"] .bg-rose-950,
+html[data-theme="dev_light_green"] .bg-rose-950\/90,
+html[data-theme="dev_light_green"] .bg-rose-950\/80 {
+  background-color: #ffe4e6 !important;
+}
+
+/* High-Contrast Programmer Ink Typography on Light Green Surfaces */
+html[data-theme="dev_light_green"] .text-white,
+html[data-theme="dev_light_green"] .text-slate-100,
+html[data-theme="dev_light_green"] .text-slate-200,
+html[data-theme="dev_light_green"] .text-emerald-50,
+html[data-theme="dev_light_green"] .text-emerald-100,
+html[data-theme="dev_light_green"] .text-emerald-100\/90,
+html[data-theme="dev_light_green"] .text-emerald-100\/80 {
+  color: #052e16 !important;
+}
+
+html[data-theme="dev_light_green"] .bg-emerald-600.text-white,
+html[data-theme="dev_light_green"] .bg-emerald-500.text-white,
+html[data-theme="dev_light_green"] .from-emerald-600.text-white {
+  color: #ffffff !important;
+}
+
+html[data-theme="dev_light_green"] .text-slate-300,
+html[data-theme="dev_light_green"] .text-slate-400,
+html[data-theme="dev_light_green"] .text-emerald-200,
+html[data-theme="dev_light_green"] .text-emerald-200\/90,
+html[data-theme="dev_light_green"] .text-emerald-200\/80,
+html[data-theme="dev_light_green"] .text-emerald-200\/70,
+html[data-theme="dev_light_green"] .text-emerald-300\/80 {
+  color: #065f46 !important;
+}
+
+html[data-theme="dev_light_green"] .text-emerald-300,
+html[data-theme="dev_light_green"] .text-emerald-400 {
+  color: #047857 !important;
+}
+
+html[data-theme="dev_light_green"] .text-amber-200,
+html[data-theme="dev_light_green"] .text-amber-300,
+html[data-theme="dev_light_green"] .text-amber-300\/90,
+html[data-theme="dev_light_green"] .text-amber-400,
+html[data-theme="dev_light_green"] .text-amber-400\/90 {
+  color: #b45309 !important;
+}
+
+html[data-theme="dev_light_green"] .text-sky-300,
+html[data-theme="dev_light_green"] .text-sky-400,
+html[data-theme="dev_light_green"] .text-blue-300,
+html[data-theme="dev_light_green"] .text-blue-400,
+html[data-theme="dev_light_green"] .text-teal-300 {
+  color: #0369a1 !important;
+}
+
+html[data-theme="dev_light_green"] .text-rose-200,
+html[data-theme="dev_light_green"] .text-rose-300,
+html[data-theme="dev_light_green"] .text-rose-400 {
+  color: #be123c !important;
+}
+
+/* Crisp 1px Developer Borders in Light Green Mode */
+html[data-theme="dev_light_green"] .border-emerald-500\/30,
+html[data-theme="dev_light_green"] .border-emerald-500\/40,
+html[data-theme="dev_light_green"] .border-emerald-500\/50,
+html[data-theme="dev_light_green"] .border-emerald-600\/30,
+html[data-theme="dev_light_green"] .border-emerald-600\/40,
+html[data-theme="dev_light_green"] .border-emerald-600\/50,
+html[data-theme="dev_light_green"] .border-emerald-700\/50,
+html[data-theme="dev_light_green"] .border-emerald-700\/60,
+html[data-theme="dev_light_green"] .border-emerald-800,
+html[data-theme="dev_light_green"] .border-emerald-800\/40,
+html[data-theme="dev_light_green"] .border-emerald-800\/60,
+html[data-theme="dev_light_green"] .border-emerald-800\/70,
+html[data-theme="dev_light_green"] .border-emerald-900\/60,
+html[data-theme="dev_light_green"] .border-slate-800,
+html[data-theme="dev_light_green"] .border-slate-800\/60,
+html[data-theme="dev_light_green"] .border-slate-800\/90,
+html[data-theme="dev_light_green"] .border-slate-700 {
+  border-color: rgba(16, 185, 129, 0.42) !important;
+}
+
+html[data-theme="dev_light_green"] .divide-emerald-900\/40 > :not([hidden]) ~ :not([hidden]) {
+  border-color: rgba(16, 185, 129, 0.28) !important;
+}
+
+html[data-theme="dev_light_green"] .placeholder-emerald-200\/50::placeholder {
+  color: rgba(6, 95, 70, 0.6) !important;
+}
+
+/* Programmer IDE Typography Touches on Tables & Code Elements */
+html[data-theme="dev_light_green"] table th {
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.04em;
+  background-color: #d1fae5 !important;
+  color: #064e3b !important;
+}
+
+/* =========================================================================
+   Theme 2: Big Tree Corporate Dark Green (emerald)
+   ========================================================================= */
+html[data-theme="emerald"] {
+  color-scheme: dark;
+  --brand-green-deep: #021a10;
+  --brand-green-dark: #042919;
+  --brand-green-primary: #064e3b;
+  --brand-green-accent: #059669;
+  --brand-green-glow: #10b981;
+}
+
+html[data-theme="emerald"] body {
+  background-color: #03140c;
+  color: #f1f5f9;
+}
+
+/* =========================================================================
+   Theme 3: Highway Night Command (midnight)
+   ========================================================================= */
+html[data-theme="midnight"] {
+  color-scheme: dark;
+  --brand-green-deep: #040d1a;
+  --brand-green-dark: #08182e;
+  --brand-green-primary: #0c4a6e;
+  --brand-green-accent: #0284c7;
+  --brand-green-glow: #38bdf8;
+}
+
+html[data-theme="midnight"] ::-webkit-scrollbar-track {
+  background: #06101e;
+}
+
+html[data-theme="midnight"] ::-webkit-scrollbar-thumb {
+  background: #0369a1;
+  border-color: #06101e;
+}
+
+html[data-theme="midnight"] .bg-\[\#02180f\],
+html[data-theme="midnight"] .bg-\[\#02180f\]\/95,
+html[data-theme="midnight"] .bg-\[\#02180f\]\/90,
+html[data-theme="midnight"] .bg-\[\#02180f\]\/85 {
+  background-color: rgba(6, 16, 30, 0.9) !important;
+}
+
+html[data-theme="midnight"] .bg-\[\#032014\],
+html[data-theme="midnight"] .bg-\[\#032014\]\/95,
+html[data-theme="midnight"] .bg-\[\#032014\]\/90,
+html[data-theme="midnight"] .bg-\[\#032014\]\/85 {
+  background-color: rgba(9, 24, 44, 0.88) !important;
+}
+
+html[data-theme="midnight"] .bg-\[\#042416\],
+html[data-theme="midnight"] .bg-\[\#01110a\]\/95,
+html[data-theme="midnight"] .bg-\[\#02150d\] {
+  background-color: rgba(5, 13, 25, 0.92) !important;
+}
+
+/* =========================================================================
+   Theme 4: Gantry Obsidian & Crimson (obsidian)
+   ========================================================================= */
+html[data-theme="obsidian"] {
+  color-scheme: dark;
+  --brand-green-deep: #0b090d;
+  --brand-green-dark: #16111a;
+  --brand-green-primary: #881337;
+  --brand-green-accent: #e11d48;
+  --brand-green-glow: #fb7185;
+}
+
+html[data-theme="obsidian"] ::-webkit-scrollbar-track {
+  background: #0d0a0f;
+}
+
+html[data-theme="obsidian"] ::-webkit-scrollbar-thumb {
+  background: #9f1239;
+  border-color: #0d0a0f;
+}
+
+html[data-theme="obsidian"] .bg-\[\#02180f\],
+html[data-theme="obsidian"] .bg-\[\#02180f\]\/95,
+html[data-theme="obsidian"] .bg-\[\#02180f\]\/90,
+html[data-theme="obsidian"] .bg-\[\#02180f\]\/85 {
+  background-color: rgba(14, 11, 16, 0.88) !important;
+}
+
+html[data-theme="obsidian"] .bg-\[\#032014\],
+html[data-theme="obsidian"] .bg-\[\#032014\]\/95,
+html[data-theme="obsidian"] .bg-\[\#032014\]\/90,
+html[data-theme="obsidian"] .bg-\[\#032014\]\/85 {
+  background-color: rgba(22, 16, 25, 0.84) !important;
+}
+
+html[data-theme="obsidian"] .bg-\[\#042416\],
+html[data-theme="obsidian"] .bg-\[\#01110a\]\/95,
+html[data-theme="obsidian"] .bg-\[\#02150d\] {
+  background-color: rgba(10, 8, 12, 0.9) !important;
+}
+
+/* Print optimizations */
+@media print {
+  body {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+  }
+
+  .print\:hidden {
+    display: none !important;
+  }
+
+  .page-break-inside-avoid {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}

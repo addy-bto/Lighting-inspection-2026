@@ -1,11 +1,29 @@
-<div align="center">
+# Big Tree Outdoor - Lighting Inspection System
 
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+Official Big Tree Outdoor Sdn Bhd lighting audit and bi-weekly inspection management system for all 31 advertising zones across Malaysia.
 
-  <h1>Built with AI Studio</h2>
+## Application Link
 
-  <p>The fastest path from prompt to production with Gemini.</p>
+- **App URL:** [https://ai.studio/apps/771637c9-993e-47b5-8fbd-1ff8dc6eaf37](https://ai.studio/apps/771637c9-993e-47b5-8fbd-1ff8dc6eaf37)
 
-  <a href="https://aistudio.google.com/apps">Start building</a>
+## Getting Started
 
-</div>
+### Prerequisites
+- Node.js (v18 or higher)
+
+### Installation
+
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+2. Run the development server:
+   ```bash
+   npm run dev
+   ```
+
+3. Build for production:
+   ```bash
+   npm run build
+   ```

@@ -1,0 +1,291 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // 1. Global Safety Net (Default-Deny Catch-All)
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // =========================================================================
+    // Hardened Global Primitives
+    // =========================================================================
+    function isValidId(id) {
+      return id is string && id.size() >= 1 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isVerifiedUser() {
+      return isSignedIn() && request.auth.token.email_verified == true;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        (request.auth.token.email == 'addy@bigtree.com.my' && request.auth.token.email_verified == true) ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    // =========================================================================
+    // Validation Blueprints (Pillar 2: The "Anti-Update-Gap")
+    // =========================================================================
+    function isValidAdminRecord(data) {
+      return data.keys().hasAll(['uid', 'grantedBy', 'createdAt', 'updatedAt']) &&
+        data.keys().hasOnly(['uid', 'grantedBy', 'createdAt', 'updatedAt']) &&
+        data.uid is string && data.uid.size() >= 1 && data.uid.size() <= 128 && data.uid.matches('^[a-zA-Z0-9_\\-]+$') &&
+        data.grantedBy is string && data.grantedBy.size() >= 1 && data.grantedBy.size() <= 128 && data.grantedBy.matches('^[a-zA-Z0-9_\\-]+$') &&
+        data.grantedBy == request.auth.uid &&
+        data.createdAt is timestamp &&
+        data.updatedAt is timestamp;
+    }
+
+    function isValidStaffPublicProfile(data) {
+      return data.keys().hasAll([
+          'uid',
+          'displayName',
+          'staffRole',
+          'department',
+          'assignedInspectorName',
+          'createdAt',
+          'updatedAt'
+        ]) &&
+        data.keys().hasOnly([
+          'uid',
+          'displayName',
+          'staffRole',
+          'department',
+          'assignedInspectorName',
+          'createdAt',
+          'updatedAt'
+        ]) &&
+        data.uid is string && data.uid.size() >= 1 && data.uid.size() <= 128 && data.uid.matches('^[a-zA-Z0-9_\\-]+$') &&
+        data.uid == request.auth.uid &&
+        data.displayName is string && data.displayName.size() >= 1 && data.displayName.size() <= 100 &&
+        data.staffRole is string && data.staffRole.size() >= 1 && data.staffRole.size() <= 60 &&
+        data.staffRole in [
+          'Admin',
+          'Senior Lighting Specialist',
+          'Field Inspection Engineer',
+          'Infrastructure Maintenance Tech',
+          'Highways & Expressways Specialist',
+          'Regional Audit Lead',
+          'Staff Inspector'
+        ] &&
+        data.department is string && data.department.size() >= 1 && data.department.size() <= 100 &&
+        data.assignedInspectorName is string && data.assignedInspectorName.size() >= 1 && data.assignedInspectorName.size() <= 60 &&
+        data.createdAt is timestamp &&
+        data.updatedAt is timestamp;
+    }
+
+    function isValidStaffPrivateInfo(data) {
+      return data.keys().hasAll(['uid', 'email', 'lastLoginLabel', 'createdAt', 'updatedAt']) &&
+        data.keys().hasOnly(['uid', 'email', 'lastLoginLabel', 'createdAt', 'updatedAt']) &&
+        data.uid is string && data.uid.size() >= 1 && data.uid.size() <= 128 && data.uid.matches('^[a-zA-Z0-9_\\-]+$') &&
+        data.uid == request.auth.uid &&
+        data.email is string && data.email.size() >= 3 && data.email.size() <= 150 &&
+        data.lastLoginLabel is string && data.lastLoginLabel.size() >= 1 && data.lastLoginLabel.size() <= 80 &&
+        data.createdAt is timestamp &&
+        data.updatedAt is timestamp;
+    }
+
+    function isValidInspectionPeriod(data) {
+      return data.keys().hasAll([
+          'periodId',
+          'orgId',
+          'year',
+          'month',
+          'zoneCount',
+          'zones',
+          'createdBy',
+          'updatedBy',
+          'updatedByName',
+          'lastAction',
+          'createdAt',
+          'updatedAt'
+        ]) &&
+        data.keys().hasOnly([
+          'periodId',
+          'orgId',
+          'year',
+          'month',
+          'zoneCount',
+          'zones',
+          'createdBy',
+          'updatedBy',
+          'updatedByName',
+          'lastAction',
+          'createdAt',
+          'updatedAt'
+        ]) &&
+        data.periodId is string && data.periodId.size() >= 5 && data.periodId.size() <= 20 && data.periodId.matches('^[a-zA-Z0-9_\\-]+$') &&
+        data.orgId is string && data.orgId.size() >= 1 && data.orgId.size() <= 40 && data.orgId == 'bigtree_outdoor' &&
+        data.year is int && data.year >= 2020 && data.year <= 2035 &&
+        data.month is int && data.month >= 1 && data.month <= 12 &&
+        data.zoneCount is int && data.zoneCount >= 1 && data.zoneCount <= 50 &&
+        data.zones is list && data.zones.size() >= 1 && data.zones.size() <= 50 && data.zones[0] is map &&
+        data.createdBy is string && data.createdBy.size() >= 1 && data.createdBy.size() <= 128 && data.createdBy.matches('^[a-zA-Z0-9_\\-]+$') &&
+        data.updatedBy is string && data.updatedBy.size() >= 1 && data.updatedBy.size() <= 128 && data.updatedBy.matches('^[a-zA-Z0-9_\\-]+$') &&
+        data.updatedBy == request.auth.uid &&
+        data.updatedByName is string && data.updatedByName.size() >= 1 && data.updatedByName.size() <= 100 &&
+        data.lastAction is string && data.lastAction.size() >= 1 && data.lastAction.size() <= 120 &&
+        data.createdAt is timestamp &&
+        data.updatedAt is timestamp;
+    }
+
+    // =========================================================================
+    // Collection 1: /admins/{adminUid}
+    // =========================================================================
+    match /admins/{adminUid} {
+      allow get: if isSignedIn() && isVerifiedUser() && isValidId(adminUid) && (isOwner(adminUid) || isAdmin());
+      allow list: if false;
+
+      allow create: if isSignedIn() && isVerifiedUser() && isValidId(adminUid) &&
+        isValidAdminRecord(incoming()) &&
+        incoming().uid == adminUid &&
+        incoming().createdAt == request.time &&
+        incoming().updatedAt == request.time &&
+        isAdmin();
+
+      allow update: if (
+        isSignedIn() && isVerifiedUser() && isValidId(adminUid) && isValidAdminRecord(incoming()) &&
+        incoming().uid == existing().uid &&
+        incoming().createdAt == existing().createdAt &&
+        incoming().updatedAt == request.time && (
+          (isAdmin() && incoming().diff(existing()).affectedKeys().hasOnly(['grantedBy', 'updatedAt']))
+        )
+      );
+
+      allow delete: if isSignedIn() && isVerifiedUser() && isValidId(adminUid) && isAdmin();
+    }
+
+    // =========================================================================
+    // Collection 2: /staff_profiles/{userId} (Public Non-PII Staff Profile)
+    // =========================================================================
+    match /staff_profiles/{userId} {
+      allow get: if isSignedIn() && isVerifiedUser() && isValidId(userId);
+      allow list: if isSignedIn() && isVerifiedUser() && resource.data.uid == request.auth.uid;
+
+      allow create: if isSignedIn() && isVerifiedUser() && isValidId(userId) &&
+        isOwner(userId) &&
+        isValidStaffPublicProfile(incoming()) &&
+        incoming().createdAt == request.time &&
+        incoming().updatedAt == request.time &&
+        (incoming().staffRole != 'Admin' || isAdmin());
+
+      allow update: if (
+        isSignedIn() && isVerifiedUser() && isValidId(userId) && isValidStaffPublicProfile(incoming()) &&
+        incoming().uid == existing().uid &&
+        incoming().createdAt == existing().createdAt &&
+        incoming().updatedAt == request.time && (
+          isAdmin() ||
+          // Action: Staff updates their own profile (cannot self-promote to Admin)
+          (isOwner(userId) &&
+            incoming().staffRole == existing().staffRole &&
+            incoming().diff(existing()).affectedKeys().hasOnly([
+              'displayName',
+              'department',
+              'assignedInspectorName',
+              'updatedAt'
+            ])) ||
+          // Action: Staff switches non-Admin operational role
+          (isOwner(userId) &&
+            incoming().staffRole != 'Admin' &&
+            incoming().diff(existing()).affectedKeys().hasOnly([
+              'displayName',
+              'staffRole',
+              'department',
+              'assignedInspectorName',
+              'updatedAt'
+            ]))
+        )
+      );
+
+      allow delete: if isSignedIn() && isVerifiedUser() && isValidId(userId) && isAdmin();
+    }
+
+    // =========================================================================
+    // Collection 3: /staff_private/{userId} (PII Isolated Record — Pillar 6 & 7)
+    // =========================================================================
+    match /staff_private/{userId} {
+      allow get: if isSignedIn() && isVerifiedUser() && isValidId(userId) && (isOwner(userId) || isAdmin());
+      allow list: if false;
+
+      allow create: if isSignedIn() && isVerifiedUser() && isValidId(userId) &&
+        isOwner(userId) &&
+        isValidStaffPrivateInfo(incoming()) &&
+        incoming().createdAt == request.time &&
+        incoming().updatedAt == request.time &&
+        existsAfter(/databases/$(database)/documents/staff_profiles/$(userId));
+
+      allow update: if (
+        isSignedIn() && isVerifiedUser() && isValidId(userId) && isValidStaffPrivateInfo(incoming()) &&
+        incoming().uid == existing().uid &&
+        incoming().createdAt == existing().createdAt &&
+        incoming().updatedAt == request.time &&
+        existsAfter(/databases/$(database)/documents/staff_profiles/$(userId)) && (
+          isAdmin() ||
+          // Action: Owner updates login timestamp and email sync
+          (isOwner(userId) &&
+            incoming().diff(existing()).affectedKeys().hasOnly(['email', 'lastLoginLabel', 'updatedAt']))
+        )
+      );
+
+      allow delete: if isSignedIn() && isVerifiedUser() && isValidId(userId) && isAdmin();
+    }
+
+    // =========================================================================
+    // Collection 4: /periods/{periodId} (Monthly Lighting Inspection Dataset)
+    // =========================================================================
+    match /periods/{periodId} {
+      allow get: if isSignedIn() && isVerifiedUser() && isValidId(periodId);
+      allow list: if false;
+
+      allow create: if isSignedIn() && isVerifiedUser() && isValidId(periodId) &&
+        isValidInspectionPeriod(incoming()) &&
+        incoming().periodId == periodId &&
+        incoming().createdBy == request.auth.uid &&
+        incoming().createdAt == request.time &&
+        incoming().updatedAt == request.time;
+
+      allow update: if (
+        isSignedIn() && isVerifiedUser() && isValidId(periodId) && isValidInspectionPeriod(incoming()) &&
+        incoming().periodId == existing().periodId &&
+        incoming().orgId == existing().orgId &&
+        incoming().year == existing().year &&
+        incoming().month == existing().month &&
+        incoming().createdBy == existing().createdBy &&
+        incoming().createdAt == existing().createdAt &&
+        incoming().updatedAt == request.time && (
+          isAdmin() ||
+          // Action: Update zone checklist, site statuses, or add zone
+          (incoming().diff(existing()).affectedKeys().hasOnly([
+            'zoneCount',
+            'zones',
+            'updatedBy',
+            'updatedByName',
+            'lastAction',
+            'updatedAt'
+          ]))
+        )
+      );
+
+      allow delete: if isSignedIn() && isVerifiedUser() && isValidId(periodId) && isAdmin();
+    }
+  }
+}

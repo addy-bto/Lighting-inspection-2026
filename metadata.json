@@ -1,0 +1,6 @@
+{
+  "name": "Big Tree Outdoor - Lighting Inspection System",
+  "description": "Official Big Tree Outdoor Sdn Bhd lighting audit and bi-weekly inspection management system for all 31 advertising zones across Malaysia.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

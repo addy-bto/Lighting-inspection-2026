@@ -1,0 +1,245 @@
+{
+  "entities": {
+    "AdminRecord": {
+      "title": "AdminRecord",
+      "description": "Trusted administrator registry entry for elevated RBAC permissions.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "Firebase Auth UID of the administrator.",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "grantedBy": {
+          "type": "string",
+          "description": "UID of the administrator who granted this role.",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when admin access was granted."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when admin record was last updated."
+        }
+      },
+      "required": ["uid", "grantedBy", "createdAt", "updatedAt"]
+    },
+    "StaffPublicProfile": {
+      "title": "StaffPublicProfile",
+      "description": "Non-PII staff profile for Big Tree Outdoor lighting inspection personnel.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "Firebase Auth UID of the staff member.",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Display name of the staff member.",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "staffRole": {
+          "type": "string",
+          "description": "Operational role in the lighting inspection team.",
+          "enum": [
+            "Admin",
+            "Senior Lighting Specialist",
+            "Field Inspection Engineer",
+            "Infrastructure Maintenance Tech",
+            "Highways & Expressways Specialist",
+            "Regional Audit Lead",
+            "Staff Inspector"
+          ],
+          "minLength": 1,
+          "maxLength": 60
+        },
+        "department": {
+          "type": "string",
+          "description": "Corporate department name.",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "assignedInspectorName": {
+          "type": "string",
+          "description": "Mapped roster inspector name (Nusir, Yana, Fadrul, Asyaqif, Ray, or All).",
+          "minLength": 1,
+          "maxLength": 60
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the profile was created."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the profile was last updated."
+        }
+      },
+      "required": [
+        "uid",
+        "displayName",
+        "staffRole",
+        "department",
+        "assignedInspectorName",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "StaffPrivateInfo": {
+      "title": "StaffPrivateInfo",
+      "description": "Isolated PII record for a staff member, accessible only by the owner or admin.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "Firebase Auth UID of the staff member.",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Verified corporate or Google email address of the staff member.",
+          "minLength": 3,
+          "maxLength": 150
+        },
+        "lastLoginLabel": {
+          "type": "string",
+          "description": "Formatted timestamp string of most recent staff sign-in.",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the private record was created."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the private record was last updated."
+        }
+      },
+      "required": ["uid", "email", "lastLoginLabel", "createdAt", "updatedAt"]
+    },
+    "InspectionPeriod": {
+      "title": "InspectionPeriod",
+      "description": "Monthly lighting inspection schedule, site checklists, and zone statuses for Big Tree Outdoor.",
+      "type": "object",
+      "properties": {
+        "periodId": {
+          "type": "string",
+          "description": "Deterministic period identifier in YEAR_MONTH format (e.g., 2026_8).",
+          "minLength": 5,
+          "maxLength": 20,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "orgId": {
+          "type": "string",
+          "description": "Organization identifier.",
+          "enum": ["bigtree_outdoor"],
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "year": {
+          "type": "number",
+          "description": "Inspection calendar year (2020-2035)."
+        },
+        "month": {
+          "type": "number",
+          "description": "Inspection calendar month (1-12)."
+        },
+        "zoneCount": {
+          "type": "number",
+          "description": "Number of zones in this inspection period (1-50)."
+        },
+        "zones": {
+          "type": "array",
+          "description": "Bounded array of up to 50 ZoneData objects containing site statuses and checklist records."
+        },
+        "createdBy": {
+          "type": "string",
+          "description": "UID of the staff member who initialized this period document.",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "updatedBy": {
+          "type": "string",
+          "description": "UID of the staff member who last updated this period document.",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "updatedByName": {
+          "type": "string",
+          "description": "Display name of the staff member who last updated this period document.",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "lastAction": {
+          "type": "string",
+          "description": "Summary of the most recent update action performed.",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the period document was created."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the period document was last updated."
+        }
+      },
+      "required": [
+        "periodId",
+        "orgId",
+        "year",
+        "month",
+        "zoneCount",
+        "zones",
+        "createdBy",
+        "updatedBy",
+        "updatedByName",
+        "lastAction",
+        "createdAt",
+        "updatedAt"
+      ]
+    }
+  },
+  "firestore": {
+    "/admins/{adminUid}": {
+      "schema": { "$ref": "#/entities/AdminRecord" },
+      "description": "Administrator registry for RBAC verification."
+    },
+    "/staff_profiles/{userId}": {
+      "schema": { "$ref": "#/entities/StaffPublicProfile" },
+      "description": "Non-PII staff member profiles."
+    },
+    "/staff_private/{userId}": {
+      "schema": { "$ref": "#/entities/StaffPrivateInfo" },
+      "description": "Isolated PII records for staff members, accessible only by owner or admin."
+    },
+    "/periods/{periodId}": {
+      "schema": { "$ref": "#/entities/InspectionPeriod" },
+      "description": "Monthly lighting inspection data for all zones and billboard sites."
+    }
+  }
+}
